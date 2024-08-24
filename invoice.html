@@ -1,0 +1,324 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Invoice Generator</title>
+    <link href="https://harbormoving.net/wp-content/uploads/2024/08/bootstrap.min_.css" rel="stylesheet">
+    <style>
+        body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f5f5f5;
+}
+.container {
+    width: 90%;
+    margin: 20px auto;
+    background: #fff;
+    padding: 20px;
+    box-shadow: 0 0 15px rgba(0,0,0,0.1);
+    border-radius: 10px;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+}
+.header img {
+    width: 150px;
+    margin-bottom: 10px;
+}
+.header .company-details {
+    text-align: right;
+}
+.header .company-details h2 {
+    margin: 0;
+}
+.invoice-details, .item-inputs {
+    margin-top: 30px;
+}
+.invoice-details h1, .item-inputs h2 {
+    margin: 0;
+    color: #333;
+}
+.item-inputs table {
+    width: 100%;
+    margin-top: 20px;
+    border-collapse: collapse;
+}
+.item-inputs th, .item-inputs td {
+    padding: 15px;
+    border: 1px solid #ddd;
+    text-align: left;
+}
+.item-inputs th {
+    background-color: #f4f4f4;
+    color: #555;
+}
+.item-inputs .description {
+    width: 100%; 
+    max-width: 800px; 
+    box-sizing: border-box;
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    min-height: 60px; 
+    resize: vertical; 
+    overflow: auto; 
+    font-size: 0.9em; 
+    word-wrap: break-word; 
+    word-break: break-all;
+    
+}
+
+.item-inputs input {
+   
+    box-sizing: border-box;
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.item-inputs th.description, .item-inputs td.description {
+    width: 75%; /* Increased width */
+}
+
+.item-inputs th.rate, .item-inputs td.rate {
+    width: 12.5%; /* Adjusted width */
+}
+
+.item-inputs th.quantity, .item-inputs td.quantity,
+.item-inputs th.subtotal, .item-inputs td.subtotal {
+    width: 12.5%; /* Adjusted width */
+}
+
+.totals {
+    margin-top: 20px;
+    width: 100%;
+}
+.totals td {
+    padding: 10px;
+    border: none;
+    text-align: left;
+}
+.totals .total-label {
+    text-align: right;
+    font-weight: bold;
+}
+.download-btn, .add-item-btn {
+    display: block;
+    width: 200px;
+    margin: 30px auto;
+    padding: 10px;
+    background-color: #007bff;
+    color: white;
+    text-align: center;
+    text-decoration: none;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+}
+.download-btn:hover, .add-item-btn:hover {
+    background-color: #0056b3;
+}
+.add-item-btn {
+    width: auto;
+    margin-top: 20px;
+    padding: 10px 20px;
+}
+.signature {
+    margin-top: 40px;
+    text-align: center;
+}
+.signature p {
+    margin: 0;
+    padding: 10px 0;
+}
+.signature-bar {
+    border-top: 1px solid #000;
+    width: 400px;
+    margin: 0 auto;
+}
+.terms {
+    margin-top: 40px;
+    font-size: 0.9em;
+    color: #555;
+    text-align: center;
+}
+@media (max-width: 768px) {
+    .header {
+        flex-direction: column;
+        text-align: center;
+    }
+    .header .company-details {
+        text-align: center;
+        margin-top: 10px;
+    }
+    .item-inputs th, .item-inputs td {
+        padding: 5px;
+        font-size: 14px;
+    }
+    .item-inputs .description {
+        font-size: 0.8em; 
+        max-width: 100%; 
+    }
+}
+@media (max-width: 480px) {
+    .container {
+        width: 100%;
+        margin: 0;
+        padding: 10px;
+    }
+    .download-btn, .add-item-btn {
+        width: 90%;
+    }
+    .item-inputs input {
+        font-size: 14px;
+        padding: 5px;
+    }
+    .item-inputs th, .item-inputs td {
+        font-size: 12px;
+    }
+    .item-inputs th.description, .item-inputs td.description {
+        width: 60%;
+    }
+    .item-inputs th.rate, .item-inputs td.rate {
+        width: 29%; /* Adjusted width */
+    }
+    .item-inputs th.quantity, .item-inputs td.quantity,
+    .item-inputs th.subtotal, .item-inputs td.subtotal {
+        width: 20%; /* Adjusted width */
+    }
+}
+
+@media print {
+    .download-btn , .add-item-btn{
+        display: none;
+    }
+    .description {
+        overflow: visible; /* Ensure overflow is visible for printing */
+
+    }
+}
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header d-flex justify-content-between align-items-center flex-wrap">
+            <img src="https://harbormoving.net/wp-content/uploads/2024/04/cropped-FINAL-harbormoving-logo-v2.png" alt="Company Logo" class="mb-3">
+            <div class="company-details text-right">
+                <h2 class="m-0">Harbor Moving</h2>
+                <p>HarborMoving.net</p>
+                <p>Address: 1060 Saratoga st East Boston MA</p>
+                <p>Email: LogisticsHarbor@Gmail.com</p>
+                <p>Phone: (857) 266-4754</p>
+            </div>
+        </div>
+        <div class="invoice-details my-4">
+            <h1>Invoice</h1>
+            <div class="form-group">
+                <label for="invoiceNumber">Invoice Number:</label>
+                <input type="text" id="invoiceNumber" class="form-control" value="INV-12345">
+            </div>
+            <div class="form-group">
+                <label for="invoiceDate">Date:</label>
+                <input type="date" id="invoiceDate" class="form-control" value="2024-07-22">
+            </div>
+            <div class="form-group">
+                <label for="clientName">Client Name:</label>
+                <input type="text" id="clientName" class="form-control" placeholder="Client Name">
+            </div>
+            <div class="form-group">
+                <label for="clientNumber">Client Phone Number:</label>
+                <input type="text" id="clientNumber" class="form-control" placeholder="Client Phone Number">
+            </div>
+        </div>
+        <div class="item-inputs my-4">
+            <h2>Items</h2>
+            <table class="table table-bordered mt-3">
+                <thead class="thead-light">
+                    <tr>
+                        <th class="description">Description</th>
+                        <th class="rate">Rate</th>
+                        <th class="quantity">Quantity</th>
+                        <th class="subtotal">Subtotal</th>
+                    </tr>
+                </thead>
+                <tbody id="items">
+                    <tr>
+                        <td class="description"><div contenteditable="true" class="description" placeholder="Item 1"></div></td>
+                        <td class="rate"><input type="number" class="form-control" placeholder="0.00" step="10" oninput="calculateSubtotal(this)"></td>
+                        <td class="quantity"><input type="number" class="form-control" placeholder="0" oninput="calculateSubtotal(this)"></td>
+                        <td class="subtotal">$0.00</td>
+                    </tr>
+                </tbody>
+            </table>
+            <button onclick="addItem()" class="btn btn-primary add-item-btn">Add Item</button>
+        </div>
+        <table class="table mt-4">
+            <tr>
+                <td class="total-label">Subtotal:</td>
+                <td id="subtotal">$0.00</td>
+            </tr>
+            <tr>
+                <td class="total-label">Tax (6.25%):</td>
+                <td id="tax">$0.00</td>
+            </tr>
+            <tr>
+                <td class="total-label">Total:</td>
+                <td id="total">$0.00</td>
+            </tr>
+        </table>
+        <div class="signature">
+            <div class="signature-bar"><span>Client Signature</span></div>
+        </div>
+        <div class="terms">
+            <p><strong>Terms and Conditions:</strong></p>
+            <p>Payment is due immediately. Late payments may incur additional charges. Please refer to our full terms and conditions for more details.</p>
+        </div>
+        <a href="javascript:window.print()" class="btn btn-primary download-btn mt-4">Download PDF</a>
+    </div>
+
+    <script>
+        function calculateSubtotal(element) {
+            const row = element.parentElement.parentElement;
+            const rate = parseFloat(row.querySelector('.rate input').value) || 0;
+            const quantity = parseFloat(row.querySelector('.quantity input').value) || 0;
+            const subtotal = rate * quantity;
+            row.querySelector('.subtotal').innerText = `$${subtotal.toFixed(2)}`;
+            calculateTotal();
+        }
+
+        function calculateTotal() {
+            const subtotals = document.querySelectorAll('.subtotal');
+            let total = 0;
+            subtotals.forEach(subtotal => {
+                total += parseFloat(subtotal.innerText.replace('$', '')) || 0;
+            });
+            const tax = total * 0.0625;
+            document.getElementById('subtotal').innerText = `$${total.toFixed(2)}`;
+            document.getElementById('tax').innerText = `$${tax.toFixed(2)}`;
+            document.getElementById('total').innerText = `$${(total + tax).toFixed(2)}`;
+        }
+
+        function addItem() {
+            const tbody = document.getElementById('items');
+            const newRow = document.createElement('tr');
+            newRow.innerHTML = `
+                <td class="description"><div contenteditable="true" class="description" placeholder="Item"></div></td>
+                <td class="rate"><input type="number" class="form-control" placeholder="0.00" step="0.01" oninput="calculateSubtotal(this)"></td>
+                <td class="quantity"><input type="number" class="form-control" placeholder="0" oninput="calculateSubtotal(this)"></td>
+                <td class="subtotal">$0.00</td>
+            `;
+            tbody.appendChild(newRow);
+        }
+    </script>
+    <script src="https://harbormoving.net/wp-content/uploads/2024/08/jquery-3.5.1.slim_.min_.js"></script>
+    <script src="https://harbormoving.net/wp-content/uploads/2024/08/popper.min_.js"></script>
+    <script src="https://harbormoving.net/wp-content/uploads/2024/08/bootstrap.min_.js"></script>
+</body>
+</html>
